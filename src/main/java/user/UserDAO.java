@@ -22,7 +22,7 @@ public class UserDAO {
 			String dbPassword = "test";
 			Class.forName(driverName);
 			conn = DriverManager.getConnection(dbURL, dbID, dbPassword);
-			System.out.println("DB연결 성공");
+//			System.out.println("DB연결 성공");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
