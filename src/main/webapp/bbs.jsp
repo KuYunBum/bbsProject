@@ -146,8 +146,8 @@
 		</div>
 	</div>
 	<!-- 게시판 메인 페이지 영역 끝 -->
-	
-	<!-- 게시판 메인 페이지 영역 끝 -->
+
+		
 	<!-- 부트스트랩 참조 영역 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
