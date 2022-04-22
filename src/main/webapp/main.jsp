@@ -96,13 +96,13 @@
 			</ol>
 			<div class="carousel-inner">
 				<div class="item active">
-					<img src="images/1.jpg">
+					<img src="images/bootstrap.png">
 				</div>
 				<div class="item">
-					<img src="images/2.jpg">
+					<img src="images/css.png">
 				</div>
 				<div class="item">
-					<img src="images/3.jpg">
+					<img src="images/javascript.png">
 				</div>
 			</div>
 			<a class="left carousel-control" href="#myCarousel" data-slide="prev">
