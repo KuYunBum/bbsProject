@@ -63,4 +63,16 @@ public class UserDAO {
 		}
 		return -1;
 	}
+	
+	public int delete(int userID) {
+		String sql = "delete users where userID = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userID);
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1; // 데이터베이스 오류
+	}
 }
