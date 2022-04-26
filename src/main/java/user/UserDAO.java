@@ -51,24 +51,24 @@ public class UserDAO {
 		return -2; // 오류
 	}
 
-	public User getList(String userId) {
+	public ArrayList<User> getList() {
 		String sql = "select userId, userName, userGender, userEmail from users";
-
+		ArrayList<User> list = new ArrayList<User>();
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				User user = new User();
 				user.setUserID(rs.getString(1));
 				user.setUserName(rs.getString(2));
 				user.setUserGender(rs.getString(3));
 				user.setUserEmail(rs.getString(4));
-				return user;
+				list.add(user);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return list;
 	}
 	
 	

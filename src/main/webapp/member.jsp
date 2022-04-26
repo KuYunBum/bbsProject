@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.BbsDAO" %>
-<%@ page import="bbs.Bbs" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="user.UserDAO" %>
+<%@ page import="user.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +16,9 @@
 		color: #000000;
 		text-decoration: none;
 	}
+	#btn_home {
+		text-align: center;
+	} 
 </style>
 <title>게시판 웹사이트</title>
 </head>
@@ -108,18 +111,15 @@
 				</thead>
 				<tbody>
 					<%
-						BbsDAO bbsDAO = new BbsDAO(); // 인스턴스 생성
-						ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
+						UserDAO userDAO = new UserDAO(); // 인스턴스 생성
+						ArrayList<User> list = userDAO.getList();
 						for(int i = 0; i < list.size(); i++){
 					%>
 					<tr>
-						<td><%= list.get(i).getBbsID() %></td>
-						<!-- 게시글 제목을 누르면 해당 글을 볼 수 있도록 링크를 걸어둔다 -->
-						<td><a href="view.jsp?bbsID=<%= list.get(i).getBbsID() %>">
-							<%= list.get(i).getBbsTitle() %></a></td>
 						<td><%= list.get(i).getUserID() %></td>
-						<td><%= list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13) + "시"
-							+ list.get(i).getBbsDate().substring(14, 16) + "분" %></td>
+						<td><%= list.get(i).getUserName() %></td>
+						<td><%= list.get(i).getUserGender() %></td>
+						<td><%= list.get(i).getUserEmail() %></td>
 					</tr>
 					<%
 						}
@@ -127,25 +127,13 @@
 				</tbody>
 			</table>
 			
-			<!-- 페이징 처리 영역 -->
-			<%
-				if(pageNumber != 1){
-			%>
-				<a href="bbs.jsp?pageNumber=<%=pageNumber - 1 %>"
-					class="btn btn-success btn-arraw-left">이전</a>
-			<%
-				}if(bbsDAO.nextPage(pageNumber + 1)){
-			%>
-				<a href="bbs.jsp?pageNumber=<%=pageNumber + 1 %>"
-					class="btn btn-success btn-arraw-left">다음</a>
-			<%
-				}
-			%>
-			
-			<!-- 글쓰기 버튼 생성 -->
-			<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
-		</div>
-	</div>
+			<div id="btn_home">
+				<a href="main.jsp" class="btn btn-primary">홈</a>
+			</div>
+			<!-- 해당 글의 작성자가 본인이라면 수정과 삭제가 가능하도록 코드 추가 -->
+				<!-- <a href="update.jsp?bbsID=<%= userID %>" class="btn btn-primary">수정</a> 	
+					<a onclick="return confirm('정말로 삭제하시겠습니까?')" href=
+					"deleteAction.jsp?bbsID=<%= userID %>" class="btn btn-primary">삭제</a> -->
 	<!-- 게시판 메인 페이지 영역 끝 -->
 
 		
