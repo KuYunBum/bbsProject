@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import bbs.Bbs;
 
 public class UserDAO {
 
@@ -48,6 +51,28 @@ public class UserDAO {
 		return -2; // 오류
 	}
 
+	public User getList(String userId) {
+		String sql = "select userId, userName, userGender, userEmail from users";
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				User user = new User();
+				user.setUserID(rs.getString(1));
+				user.setUserName(rs.getString(2));
+				user.setUserGender(rs.getString(3));
+				user.setUserEmail(rs.getString(4));
+				return user;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
 	public int join(User user) {
 		String sql = "insert into users values(?, ?, ?, ?, ?)";
 		try {
