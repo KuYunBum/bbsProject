@@ -50,7 +50,23 @@ public class UserDAO {
 		}
 		return -2; // 오류
 	}
-
+	
+	public int join(User user) {
+		String sql = "insert into users values(?, ?, ?, ?, ?)";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, user.getUserID());
+			pstmt.setString(2, user.getUserPassword());
+			pstmt.setString(3, user.getUserName());
+			pstmt.setString(4, user.getUserGender());
+			pstmt.setString(5, user.getUserEmail());
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
 	public ArrayList<User> getList() {
 		String sql = "select userId, userName, userGender, userEmail from users";
 		ArrayList<User> list = new ArrayList<User>();
@@ -71,22 +87,24 @@ public class UserDAO {
 		return list;
 	}
 	
-	
-	
-	public int join(User user) {
-		String sql = "insert into users values(?, ?, ?, ?, ?)";
+	public User getUser(String userID) {
+		String sql = "select userId, userName, userGender, userEmail from users where userID = ?";
 		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, user.getUserID());
-			pstmt.setString(2, user.getUserPassword());
-			pstmt.setString(3, user.getUserName());
-			pstmt.setString(4, user.getUserGender());
-			pstmt.setString(5, user.getUserEmail());
-			return pstmt.executeUpdate();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userID);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				User user = new User();
+				user.setUserID(rs.getString(1));
+				user.setUserName(rs.getString(2));
+				user.setUserGender(rs.getString(3));
+				user.setUserEmail(rs.getString(4));
+				return user;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return -1;
+		return null;
 	}
 	
 	public int delete(int userID) {

@@ -41,8 +41,7 @@
 		}
 		
 		// 유효한 글이라면 구체적인 정보를 'bbs'라는 인스턴스에 담는다
-		// Bbs bbs = new BbsDAO().getBbs(bbsID);
-		User user = new User();
+		User user = new UserDAO().getUser(userID);
 	%>
 	<nav class="navbar navbar-default"> <!-- 네비게이션 -->
 		<div class="navbar-header"> 	<!-- 네비게이션 상단 부분 -->
@@ -138,7 +137,7 @@
 				
 				<!-- 해당 글의 작성자가 본인이라면 수정과 삭제가 가능하도록 코드 추가 -->
 				<%
-					if(userID != null && userID.equals("admin")){
+					if(userID != null && !userID.equals("admin")){
 				%>
 						<a onclick="return confirm('정말로 삭제하시겠습니까?')" href=
 						"memberDeleteAction.jsp?userID=<%= userID %>" class="btn btn-primary">삭제</a>
