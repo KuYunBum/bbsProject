@@ -117,7 +117,8 @@
 					%>
 					<tr>
 						<td><%= list.get(i).getUserID() %></td>
-						<td><%= list.get(i).getUserName() %></td>
+						<td><a href="memberView.jsp?userID=<%= list.get(i).getUserID() %>">
+						<%= list.get(i).getUserName() %></td>
 						<td><%= list.get(i).getUserGender() %></td>
 						<td><%= list.get(i).getUserEmail() %></td>
 					</tr>
