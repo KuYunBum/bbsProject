@@ -153,7 +153,7 @@
 				
 				<!-- 해당 글의 작성자가 본인이라면 수정과 삭제가 가능하도록 코드 추가 -->
 				<%
-					if(userID != null && userID.equals(bbs.getUserID())){
+					if(userID != null && (userID.equals(bbs.getUserID()) || userID.equals("admin"))){
 				%>
 						<a href="update.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">수정</a>
 						<a onclick="return confirm('정말로 삭제하시겠습니까?')" href=

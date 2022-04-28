@@ -39,7 +39,7 @@
 		}
 		//해당 'bbsID'에 대한 게시글을 가져온 다음 세션을 통하여 작성자 본인이 맞는지 체크한다
 		Bbs bbs = new BbsDAO().getBbs(bbsID);
-		if(!userID.equals(bbs.getUserID())){
+		if(!userID.equals(bbs.getUserID()) && !userID.equals(userID)){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('권한이 없습니다')");
