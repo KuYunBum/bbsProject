@@ -26,41 +26,41 @@
 			script.println("</script>");
 		}
 		
-		int bbsID = 0;
-		if(request.getParameter("bbsID") != null){
-			bbsID = Integer.parseInt(request.getParameter("bbsID"));
+		userID = "";
+		if(request.getParameter("userID") != null){
+			userID = request.getParameter("userID");
 		}
-		if(bbsID == 0){
+		if(userID == null){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
-			script.println("alert('유효하지 않은 글입니다')");
-			script.println("location.href='bbs.jsp'");
+			script.println("alert('유효하지 않은 회원입니다')");
+			script.println("location.href='member.jsp'");
 			script.println("</script>");
 		}
-		//해당 'bbsID'에 대한 게시글을 가져온 다음 세션을 통하여 작성자 본인이 맞는지 체크한다
+		//해당 'userID'에 대한 회원정보를 가져온 다음 세션을 통하여 본인이 맞는지 체크한다
 		User user = new UserDAO().getUser(userID);
 		if(!userID.equals(user.getUserID())){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('권한이 없습니다')");
-			script.println("location.href='bbs.jsp'");
+			script.println("location.href='member.jsp'");
 			script.println("</script>");
 		} else{
 			// 글 삭제 로직을 수행한다
 			UserDAO userDAO = new UserDAO();
-			int result = userDAO.delete(bbsID);
+			int result = userDAO.delete(userID);
 			// 데이터베이스 오류인 경우
 			if(result == -1){
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-				script.println("alert('글 수정하기에 실패했습니다')");
+				script.println("alert('회원정보 삭제에 실패했습니다')");
 				script.println("history.back()");
 				script.println("</script>");
 			// 글 삭제가 정상적으로 실행되면 알림창을 띄우고 게시판 메인으로 이동한다
 			}else {
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-				script.println("alert('글 삭제하기 성공')");
+				script.println("alert('회원정보 삭제하기 성공')");
 				script.println("location.href='bbs.jsp'");
 				script.println("</script>");
 			}

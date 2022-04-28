@@ -107,11 +107,11 @@ public class UserDAO {
 		return null;
 	}
 	
-	public int delete(int userID) {
+	public int delete(String userID) {
 		String sql = "delete users where userID = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, userID);
+			pstmt.setString(1, userID);
 			return pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
