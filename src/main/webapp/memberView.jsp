@@ -86,19 +86,24 @@
 			%>
 			<!-- 헤더 우측에 나타나는 드랍다운 영역 -->
 			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">회원관리<span class="caret"></span></a>
-					<!-- 드랍다운 아이템 영역 -->	
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-haspopup="true"
+					aria-expanded="false">회원관리<span class="caret"></span></a> 
+					<!-- 드랍다운 아이템 영역 -->
 					<ul class="dropdown-menu">
+						<%
+						if (userID != null && userID.equals("admin")) {
+						%>
 						<li><a href="member.jsp">회원목록</a></li>
+						<%
+						}
+						%>
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
 			</ul>
 			<%
-				}
+			}
 			%>
 		</div>
 	</nav>
