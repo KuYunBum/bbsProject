@@ -24,8 +24,8 @@
 			userID = (String)session.getAttribute("userID");
 		}
 		
-		// bbsID를 초기화 시키고
-		// 'bbsID'라는 데이터가 넘어온 것이 존재한다면 캐스팅을 하여 변수에 담는다
+		// userID를 초기화 시키고
+		// 'userID'라는 데이터가 넘어온 것이 존재한다면 캐스팅을 하여 변수에 담는다
 		userID = null;
 		if(request.getParameter("userID") != null){
 			userID = request.getParameter("userID");
@@ -40,7 +40,7 @@
 			script.println("</script");
 		}
 		
-		// 유효한 글이라면 구체적인 정보를 'bbs'라는 인스턴스에 담는다
+		// 구체적인 정보를 'user'라는 인스턴스에 담는다
 		User user = new UserDAO().getUser(userID);
 	%>
 	<nav class="navbar navbar-default"> <!-- 네비게이션 -->
@@ -135,7 +135,7 @@
 			<div id="btn">
 				<a href="member.jsp" class="btn btn-primary">목록</a>
 				
-				<!-- 해당 글의 작성자가 본인이라면 수정과 삭제가 가능하도록 코드 추가 -->
+				<!-- 관리자면 삭제가 가능하도록 코드 추가 -->
 				<%
 					if(userID != null && !userID.equals("admin")){
 				%>

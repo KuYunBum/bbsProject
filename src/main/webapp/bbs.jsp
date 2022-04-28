@@ -3,6 +3,8 @@
 	<%@ page import="java.io.PrintWriter" %>
 <%@ page import="bbs.BbsDAO" %>
 <%@ page import="bbs.Bbs" %>
+<%@ page import="user.UserDAO" %>
+<%@ page import="user.User" %>
 <%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
@@ -86,6 +88,12 @@
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			<%
+			User user = new UserDAO().getUser(userID);
+			%>
+			<li><a><%=user.getUserID()%> 님</a></li>
 			</ul>
 			<%
 				}

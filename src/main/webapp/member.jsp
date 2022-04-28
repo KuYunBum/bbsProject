@@ -90,6 +90,12 @@
 					</ul>
 				</li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			<%
+			User user = new UserDAO().getUser(userID);
+			%>
+			<li><a><%=user.getUserID()%> 님</a></li>
+			</ul>
 			<%
 				}
 			%>

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="user.UserDAO" %>
+<%@ page import="user.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,6 +76,12 @@
 						<li><a href="logoutAction.jsp">로그아웃</a></li>
 					</ul>
 				</li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+			<%
+			User user = new UserDAO().getUser(userID);
+			%>
+			<li><a><%=user.getUserID()%> 님</a></li>
 			</ul>
 			<%
 				}
