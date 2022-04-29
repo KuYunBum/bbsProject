@@ -1,19 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.io.PrintWriter" %>
+	<%@ page import="java.io.PrintWriter" %>
+<%@ page import="notice.NoticeDAO" %>
+<%@ page import="notice.Notice" %>
 <%@ page import="user.UserDAO" %>
 <%@ page import="user.User" %>
-
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
-<style type="text/css">
-	#btn {
-		text-align: center;
-	} 
-</style>
 <meta charset="UTF-8">
+<meta name="viewport" content="width-device-width", initial-scale="1">
+<!-- 루트 폴더에 부트스트랩을 참조하는 링크 -->
 <link rel="stylesheet" href="css/bootstrap.css">
+<style type="text/css">
+	a, a:hover{
+		color: #000000;
+		text-decoration: none;
+	}
+</style>
 <title>게시판 웹사이트</title>
 </head>
 <body>
@@ -23,25 +28,12 @@
 		if(session.getAttribute("userID") != null){
 			userID = (String)session.getAttribute("userID");
 		}
-		
-		// userID를 초기화 시키고
-		// 'userID'라는 데이터가 넘어온 것이 존재한다면 캐스팅을 하여 변수에 담는다
-		userID = null;
-		if(request.getParameter("userID") != null){
-			userID = request.getParameter("userID");
+		int pageNumber = 1; //기본은 1 페이지를 할당
+		// 만약 파라미터로 넘어온 오브젝트 타입 'pageNumber'가 존재한다면
+		// 'int'타입으로 캐스팅을 해주고 그 값을 'pageNumber'변수에 저장한다
+		if(request.getParameter("pageNumber") != null){
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		}
-		
-		// 만약 넘어온 데이터가 없다면
-		if(userID == null){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("alert('유효하지 않은 회원입니다')");
-			script.println("location.href='bbs.jsp'");
-			script.println("</script");
-		}
-		
-		// 구체적인 정보를 'user'라는 인스턴스에 담는다
-		User user = new UserDAO().getUser(userID);
 	%>
 	<nav class="navbar navbar-default"> <!-- 네비게이션 -->
 		<div class="navbar-header"> 	<!-- 네비게이션 상단 부분 -->
@@ -86,10 +78,11 @@
 			%>
 			<!-- 헤더 우측에 나타나는 드랍다운 영역 -->
 			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" role="button" aria-haspopup="true"
-					aria-expanded="false">회원관리<span class="caret"></span></a> 
-					<!-- 드랍다운 아이템 영역 -->
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">회원관리<span class="caret"></span></a>
+					<!-- 드랍다운 아이템 영역 -->	
 					<ul class="dropdown-menu">
 						<%
 						if (userID != null && userID.equals("admin")) {
@@ -102,56 +95,74 @@
 					</ul>
 				</li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
 			<%
-			}
+			User user = new UserDAO().getUser(userID);
+			%>
+			<li><a><%=user.getUserID()%> 님</a></li>
+			</ul>
+			<%
+				}
 			%>
 		</div>
 	</nav>
 	<!-- 네비게이션 영역 끝 -->
 	
-	<!-- 게시판 글 보기 양식 영역 시작 -->
+	<!-- 게시판 메인 페이지 영역 시작 -->
 	<div class="container">
 		<div class="row">
 			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
-						<th colspan="2" style="background-color: #eeeeee; text-align: center;">회원 상세정보</th>
+						<th style="background-color: #eeeeee; text-align: center;">번호</th>
+						<th style="background-color: #eeeeee; text-align: center;">공지제목</th>
+						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
+						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
 					</tr>
 				</thead>
 				<tbody>
+					<%
+					NoticeDAO noticeDAO = new NoticeDAO(); // 인스턴스 생성
+						ArrayList<Notice> list = noticeDAO.getList(pageNumber);
+						for(int i = 0; i < list.size(); i++){
+					%>
 					<tr>
-						<td style="width: 20%;">아이디</td>
-						<td colspan="2"><%= user.getUserID() %></td>
+						<td><%= list.get(i).getNoticeID() %></td>
+						<!-- 게시글 제목을 누르면 해당 글을 볼 수 있도록 링크를 걸어둔다 -->
+						<td><a href="noticeview.jsp?bbsID=<%= list.get(i).getNoticeID() %>">
+							<%= list.get(i).getNoticeTitle() %></a></td>
+						<td><%= list.get(i).getUserID() %></td>
+						<td><%= list.get(i).getNoticeDate().substring(0, 11) + list.get(i).getNoticeDate().substring(11, 13) + "시"
+							+ list.get(i).getNoticeDate().substring(14, 16) + "분" %></td>
 					</tr>
-					<tr>
-						<td>이름</td>
-						<td colspan="2"><%= user.getUserName() %></td>
-					</tr>
-					<tr>
-						<td>성별</td>
-						<td colspan="2"><%= user.getUserGender()%></td>
-					</tr>
-					<tr>
-						<td>이메일</td>
-						<td colspan="2"><%= user.getUserEmail() %></td>
-					</tr>
+					<%
+						}
+					%>
 				</tbody>
 			</table>
-			<div id="btn">
-				<a href="member.jsp" class="btn btn-primary">목록</a>
-				
-				<!-- 관리자면 삭제가 가능하도록 코드 추가 -->
-				<%
-					if(userID != null && !userID.equals("admin")){
-				%>
-						<a onclick="return confirm('정말로 삭제하시겠습니까?')" href=
-						"memberDeleteAction.jsp?userID=<%= userID %>" class="btn btn-primary">삭제</a>
-				<%
-					}
-				%>
-			</div>
+			
+			<!-- 페이징 처리 영역 -->
+			<%
+				if(pageNumber != 1){
+			%>
+				<a href="notice.jsp?pageNumber=<%=pageNumber - 1 %>"
+					class="btn btn-success btn-arraw-left">이전</a>
+			<%
+				}if(noticeDAO.nextPage(pageNumber + 1)){
+			%>
+				<a href="notice.jsp?pageNumber=<%=pageNumber + 1 %>"
+					class="btn btn-success btn-arraw-left">다음</a>
+			<%
+				}
+			%>
+			
+			<!-- 글쓰기 버튼 생성 -->
+			<a href="noticeWrite.jsp" class="btn btn-primary pull-right">글쓰기</a>
 		</div>
 	</div>
+	<!-- 게시판 메인 페이지 영역 끝 -->
+
+		
 	<!-- 부트스트랩 참조 영역 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>

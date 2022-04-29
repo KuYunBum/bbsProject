@@ -52,7 +52,7 @@
 		<!-- 게시판 제목 이름 옆에 나타나는 메뉴 영역 -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="main.jsp">메인</a></li>
+				<li><a href="notice.jsp">공지사항</a></li>
 				<li class="active"><a href="bbs.jsp">게시판</a></li>
 			</ul>
 			<%
@@ -129,7 +129,7 @@
 					<tr>
 						<td><%= list.get(i).getBbsID() %></td>
 						<!-- 게시글 제목을 누르면 해당 글을 볼 수 있도록 링크를 걸어둔다 -->
-						<td><a href="view.jsp?bbsID=<%= list.get(i).getBbsID() %>">
+						<td><a href="bbsView.jsp?bbsID=<%= list.get(i).getBbsID() %>">
 							<%= list.get(i).getBbsTitle() %></a></td>
 						<td><%= list.get(i).getUserID() %></td>
 						<td><%= list.get(i).getBbsDate().substring(0, 11) + list.get(i).getBbsDate().substring(11, 13) + "시"
@@ -157,7 +157,7 @@
 			%>
 			
 			<!-- 글쓰기 버튼 생성 -->
-			<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
+			<a href="bbsWrite.jsp" class="btn btn-primary pull-right">글쓰기</a>
 		</div>
 	</div>
 	<!-- 게시판 메인 페이지 영역 끝 -->
