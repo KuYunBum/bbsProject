@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.io.PrintWriter" %>
 <%@ page import="user.UserDAO" %>
 <%@ page import="user.User" %>
 <!DOCTYPE html>
@@ -111,18 +110,8 @@
 					</tbody>
 				</table>
 				<!-- 글쓰기 버튼 생성 -->
-				<%
-					if (userID == null) {
-				%>
 				<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
-				<%
-					PrintWriter script = response.getWriter();
-					script.println("<script>");
-					script.println("alert('로그인을 하세요')");
-					script.println("location.href='login.jsp'");
-					script.println("</script>");
-					}
-				%>
+
 			</form>
 		</div>
 	</div>
