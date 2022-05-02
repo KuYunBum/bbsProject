@@ -157,7 +157,13 @@
 			%>
 			
 			<!-- 글쓰기 버튼 생성 -->
+			<%
+				if(userID != null && userID.equals("admin")){
+			%>
 			<a href="noticeWrite.jsp" class="btn btn-primary pull-right">글쓰기</a>
+			<%
+				}
+			%>
 		</div>
 	</div>
 	<!-- 게시판 메인 페이지 영역 끝 -->

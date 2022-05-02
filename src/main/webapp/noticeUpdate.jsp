@@ -101,7 +101,7 @@
 	<!-- 게시판 글 수정 양식 영역 시작 -->
 	<div class="container">
 		<div class="row">
-			<form method="post" action="noticeUpdateAction.jsp?bbsID=<%= noticeID %>">
+			<form method="post" action="noticeUpdateAction.jsp?noticeID=<%= noticeID %>">
 				<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 					<thead>
 						<tr>
