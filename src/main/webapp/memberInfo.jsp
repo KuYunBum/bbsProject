@@ -1,25 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ page import="java.io.PrintWriter" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.io.PrintWriter" %>
 <%@ page import="user.UserDAO" %>
 <%@ page import="user.User" %>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width-device-width", initial-scale="1">
-<!-- 루트 폴더에 부트스트랩을 참조하는 링크 -->
-<link rel="stylesheet" href="css/bootstrap.css">
 <style type="text/css">
-	a, a:hover{
-		color: #000000;
-		text-decoration: none;
-	}
-	#btn_home {
+	#btn {
 		text-align: center;
 	} 
 </style>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="css/bootstrap.css">
 <title>게시판 웹사이트</title>
 </head>
 <body>
@@ -29,12 +23,25 @@
 		if(session.getAttribute("userID") != null){
 			userID = (String)session.getAttribute("userID");
 		}
-		int pageNumber = 1; //기본은 1 페이지를 할당
-		// 만약 파라미터로 넘어온 오브젝트 타입 'pageNumber'가 존재한다면
-		// 'int'타입으로 캐스팅을 해주고 그 값을 'pageNumber'변수에 저장한다
-		if(request.getParameter("pageNumber") != null){
-			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		
+		// userID를 초기화 시키고
+		// 'userID'라는 데이터가 넘어온 것이 존재한다면 캐스팅을 하여 변수에 담는다
+		userID = null;
+		if(request.getParameter("userID") != null){
+			userID = request.getParameter("userID");
 		}
+		
+		// 만약 넘어온 데이터가 없다면
+		if(userID == null){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('유효하지 않은 회원입니다')");
+			script.println("location.href='main.jsp'");
+			script.println("</script");
+		}
+		
+		// 구체적인 정보를 'user'라는 인스턴스에 담는다
+		User user = new UserDAO().getUser(userID);
 	%>
 	<nav class="navbar navbar-default"> <!-- 네비게이션 -->
 		<div class="navbar-header"> 	<!-- 네비게이션 상단 부분 -->
@@ -54,7 +61,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="notice.jsp">공지사항</a></li>
-				<li><a href="bbs.jsp">게시판</a></li>
+				<li class="active"><a href="bbs.jsp">게시판</a></li>
 			</ul>
 			<%
 				// 로그인 하지 않았을 때 보여지는 화면
@@ -79,13 +86,12 @@
 			%>
 			<!-- 헤더 우측에 나타나는 드랍다운 영역 -->
 			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">회원관리<span class="caret"></span></a>
-					<!-- 드랍다운 아이템 영역 -->	
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-haspopup="true"
+					aria-expanded="false">회원관리<span class="caret"></span></a> 
+					<!-- 드랍다운 아이템 영역 -->
 					<ul class="dropdown-menu">
-						<li><a href="#">내정보</a></li>
+						<li><a href="memberInfo.jsp">내정보</a></li>
 						<%
 						if (userID != null && userID.equals("admin")) {
 						%>
@@ -97,60 +103,56 @@
 					</ul>
 				</li>
 			</ul>
-			<ul class="nav navbar-nav navbar-right">
 			<%
-			User user = new UserDAO().getUser(userID);
-			%>
-			<li><a><%=user.getUserID()%> 님</a></li>
-			</ul>
-			<%
-				}
+			}
 			%>
 		</div>
 	</nav>
 	<!-- 네비게이션 영역 끝 -->
 	
-	<!-- 게시판 메인 페이지 영역 시작 -->
+	<!-- 게시판 글 보기 양식 영역 시작 -->
 	<div class="container">
 		<div class="row">
 			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
-						<th style="background-color: #eeeeee; text-align: center;">아이디</th>
-						<th style="background-color: #eeeeee; text-align: center;">이름</th>
-						<th style="background-color: #eeeeee; text-align: center;">성별</th>
-						<th style="background-color: #eeeeee; text-align: center;">이메일</th>
+						<th colspan="2" style="background-color: #eeeeee; text-align: center;">회원 상세정보</th>
 					</tr>
 				</thead>
 				<tbody>
-					<%
-						UserDAO userDAO = new UserDAO(); // 인스턴스 생성
-						ArrayList<User> list = userDAO.getList();
-						for(int i = 0; i < list.size(); i++){
-					%>
 					<tr>
-						<td><%= list.get(i).getUserID() %></td>
-						<td><a href="memberView.jsp?userID=<%= list.get(i).getUserID() %>">
-						<%= list.get(i).getUserName() %></td>
-						<td><%= list.get(i).getUserGender() %></td>
-						<td><%= list.get(i).getUserEmail() %></td>
+						<td style="width: 20%;">아이디</td>
+						<td colspan="2"><%= user.getUserID() %></td>
 					</tr>
-					<%
-						}
-					%>
+					<tr>
+						<td>이름</td>
+						<td colspan="2"><%= user.getUserName() %></td>
+					</tr>
+					<tr>
+						<td>성별</td>
+						<td colspan="2"><%= user.getUserGender()%></td>
+					</tr>
+					<tr>
+						<td>이메일</td>
+						<td colspan="2"><%= user.getUserEmail() %></td>
+					</tr>
 				</tbody>
 			</table>
-			
-			<div id="btn_home">
-				<a href="main.jsp" class="btn btn-primary">홈</a>
+			<div id="btn">
+				<a href="member.jsp" class="btn btn-primary">목록</a>
+				
+				<!-- 관리자면 삭제가 가능하도록 코드 추가 -->
+				<%
+					if(userID != null && !userID.equals("admin")){
+				%>
+						<a onclick="return confirm('정말로 삭제하시겠습니까?')" href=
+						"memberDeleteAction.jsp?userID=<%= userID %>" class="btn btn-primary">삭제</a>
+				<%
+					}
+				%>
 			</div>
-			<!-- 해당 글의 작성자가 본인이라면 수정과 삭제가 가능하도록 코드 추가 -->
-				<!-- <a href="update.jsp?bbsID=<%= userID %>" class="btn btn-primary">수정</a> 	
-					<a onclick="return confirm('정말로 삭제하시겠습니까?')" href=
-					"deleteAction.jsp?bbsID=<%= userID %>" class="btn btn-primary">삭제</a> -->
-	<!-- 게시판 메인 페이지 영역 끝 -->
-
-		
+		</div>
+	</div>
 	<!-- 부트스트랩 참조 영역 -->
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
