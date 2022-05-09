@@ -120,13 +120,13 @@
 			</ol>
 			<div class="carousel-inner">
 				<div class="item active">
-					<img src="images/bootstrap.png">
+					<img src="images/a.jpg">
 				</div>
 				<div class="item">
-					<img src="images/css.png">
+					<img src="images/b.jpg">
 				</div>
 				<div class="item">
-					<img src="images/javascript.png">
+					<img src="images/c.jpg">
 				</div>
 			</div>
 			<a class="left carousel-control" href="#myCarousel" data-slide="prev">
