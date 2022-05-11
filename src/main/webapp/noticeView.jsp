@@ -93,7 +93,7 @@
 						aria-expanded="false">회원관리<span class="caret"></span></a>
 					<!-- 드랍다운 아이템 영역 -->	
 					<ul class="dropdown-menu">
-						<li><a href="#">내정보</a></li>
+						<li><a href="memberInfo.jsp">내정보</a></li>
 						<%
 						if (userID != null && userID.equals("admin")) {
 						%>

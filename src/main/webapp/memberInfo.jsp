@@ -24,22 +24,6 @@
 			userID = (String)session.getAttribute("userID");
 		}
 		
-		// userID를 초기화 시키고
-		// 'userID'라는 데이터가 넘어온 것이 존재한다면 캐스팅을 하여 변수에 담는다
-		userID = null;
-		if(request.getParameter("userID") != null){
-			userID = request.getParameter("userID");
-		}
-		
-		// 만약 넘어온 데이터가 없다면
-		if(userID == null){
-			PrintWriter script = response.getWriter();
-			script.println("<script>");
-			script.println("alert('유효하지 않은 회원입니다')");
-			script.println("location.href='main.jsp'");
-			script.println("</script");
-		}
-		
 		// 구체적인 정보를 'user'라는 인스턴스에 담는다
 		User user = new UserDAO().getUser(userID);
 	%>
@@ -61,7 +45,7 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="notice.jsp">공지사항</a></li>
-				<li><a href="bbs.jsp">게시판</a></li>
+				<li><a href="member.jsp">게시판</a></li>
 			</ul>
 			<%
 				// 로그인 하지 않았을 때 보여지는 화면
@@ -91,7 +75,7 @@
 					aria-expanded="false">회원관리<span class="caret"></span></a> 
 					<!-- 드랍다운 아이템 영역 -->
 					<ul class="dropdown-menu">
-						<li><a href="memberInfo.jsp">내정보</a></li>
+						<li><a href="#">내정보</a></li>
 						<%
 						if (userID != null && userID.equals("admin")) {
 						%>
@@ -139,17 +123,7 @@
 				</tbody>
 			</table>
 			<div id="btn">
-				<a href="member.jsp" class="btn btn-primary">목록</a>
-				
-				<!-- 관리자면 삭제가 가능하도록 코드 추가 -->
-				<%
-					if(userID != null && !userID.equals("admin")){
-				%>
-						<a onclick="return confirm('정말로 삭제하시겠습니까?')" href=
-						"memberDeleteAction.jsp?userID=<%= userID %>" class="btn btn-primary">삭제</a>
-				<%
-					}
-				%>
+				<a href="main.jsp" class="btn btn-primary">홈</a>
 			</div>
 		</div>
 	</div>
